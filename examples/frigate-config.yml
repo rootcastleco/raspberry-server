@@ -1,0 +1,73 @@
+# Frigate NVR Örnek Yapılandırması
+# Dosya: /opt/frigate/config/config.yml
+
+mqtt:
+  enabled: false
+
+# go2rtc stream tanımları
+go2rtc:
+  streams:
+    # Yerel RTSP kamera
+    cam1: rtsp://admin:2302@192.168.1.23:554/live/0/MAIN
+    
+    # XMeye/Hisilicon DVR
+    cam2: dvrip://admin:199802@188.3.149.17:34567?channel=0&subtype=0
+
+# Kamera tanımları
+cameras:
+  cam1:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/cam1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+    snapshots:
+      enabled: true
+      retain:
+        default: 7
+
+  cam2:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/cam2
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+    snapshots:
+      enabled: true
+      retain:
+        default: 7
+
+# Genel kayıt ayarları
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion  # all, motion, active_objects
+
+# Genel snapshot ayarları
+snapshots:
+  enabled: true
+  retain:
+    default: 7

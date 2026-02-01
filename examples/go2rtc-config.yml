@@ -1,0 +1,35 @@
+# go2rtc Örnek Yapılandırması
+# Dosya: /opt/go2rtc/config.yml
+
+streams:
+  # RTSP Kamera örnekleri
+  cam1: rtsp://admin:password@192.168.1.100:554/live/0/MAIN
+  cam2: rtsp://admin:password@192.168.1.101:554/Streaming/Channels/101
+  
+  # XMeye/Hisilicon DVR (dvrip protokolü)
+  cam3: dvrip://admin:password@192.168.1.102:34567?channel=0&subtype=0
+  
+  # ONVIF kamera
+  cam4: onvif://admin:password@192.168.1.103:80
+  
+  # Substream (düşük kalite - daha az CPU)
+  cam1_sub: rtsp://admin:password@192.168.1.100:554/live/0/SUB
+
+# API ayarları
+api:
+  listen: ":1984"
+  origin: "*"
+  # Güvenlik için kullanıcı adı ve şifre
+  username: "admin"
+  password: "guclu_sifre_123"
+
+# WebRTC ayarları
+webrtc:
+  listen: ":8555/tcp"
+  # ICE sunucuları (isteğe bağlı)
+  # ice_servers:
+  #   - urls: [stun:stun.l.google.com:19302]
+
+# Log seviyesi
+log:
+  level: info  # trace, debug, info, warn, error
