@@ -1,5 +1,6 @@
 #!/bin/bash
-# AlmaLinux Frigate NVR + go2rtc Installation Script
+# Frigate NVR + go2rtc Installation Script
+# Supports: Debian/Ubuntu, AlmaLinux/RHEL/CentOS
 # go2rtc: port 1984 (canlı yayın)
 # Frigate: port 5000 (kayıt + hareket algılama)
 # Usage: curl -sSL https://raw.githubusercontent.com/rootcastleco/raspberry-server/main/install-frigate.sh | sudo bash
@@ -20,12 +21,36 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Detect OS
+if command -v apt &> /dev/null; then
+    PKG_MANAGER="apt"
+    echo -e "${YELLOW}Debian/Ubuntu tespit edildi${NC}"
+elif command -v dnf &> /dev/null; then
+    PKG_MANAGER="dnf"
+    echo -e "${YELLOW}RHEL/AlmaLinux tespit edildi${NC}"
+elif command -v yum &> /dev/null; then
+    PKG_MANAGER="yum"
+    echo -e "${YELLOW}CentOS tespit edildi${NC}"
+else
+    echo -e "${RED}Desteklenmeyen paket yöneticisi${NC}"
+    exit 1
+fi
+
 # 1. Docker Kurulumu
 echo -e "${YELLOW}[1/6] Docker kuruluyor...${NC}"
 if ! command -v docker &> /dev/null; then
-    dnf install -y dnf-plugins-core
-    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    if [ "$PKG_MANAGER" = "apt" ]; then
+        apt update
+        apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+        curl -fsSL https://download.docker.com/linux/$(. /etc/os-release && echo "$ID")/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$(. /etc/os-release && echo "$ID") $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+        apt update
+        apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    else
+        $PKG_MANAGER install -y dnf-plugins-core 2>/dev/null || true
+        $PKG_MANAGER config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 2>/dev/null || true
+        $PKG_MANAGER install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    fi
     systemctl enable --now docker
 else
     echo "Docker zaten kurulu"
