@@ -23,14 +23,17 @@ fi
 echo -e "${YELLOW}[1/7] Updating system...${NC}"
 dnf update -y
 
-# 2. Enable EPEL and PowerTools/CRB repositories
-echo -e "${YELLOW}[2/7] Enabling EPEL and CRB repositories...${NC}"
+# 2. Enable EPEL and RPM Fusion repositories
+echo -e "${YELLOW}[2/7] Enabling EPEL and RPM Fusion repositories...${NC}"
 dnf install -y epel-release
 dnf config-manager --set-enabled crb
 
+# RPM Fusion for FFmpeg
+dnf install -y --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm 2>/dev/null || true
+
 # 3. FFmpeg Installation
 echo -e "${YELLOW}[3/7] Installing FFmpeg...${NC}"
-dnf install -y ffmpeg ffmpeg-devel
+dnf install -y ffmpeg
 
 # 4. Download go2rtc
 echo -e "${YELLOW}[4/7] Downloading go2rtc...${NC}"
