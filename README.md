@@ -267,9 +267,7 @@ sudo docker logs frigate --tail 50
 
 MIT License
 
-## 🤝 Katkıda Bulunma
 
-Pull request'ler kabul edilir!
 
 ---
 
