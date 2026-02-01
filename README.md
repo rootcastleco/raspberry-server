@@ -1,8 +1,29 @@
-# Raspberry Pi CCTV Server Kurulum Rehberi
+# CCTV Server Kurulum Rehberi
 
-Bu rehber, Raspberry Pi üzerinde go2rtc kullanarak CCTV kameralarını HLS stream olarak yayınlamanızı sağlar.
+go2rtc kullanarak CCTV kameralarını HLS/WebRTC stream olarak yayınlamanızı sağlar.
 
-## 🛠️ Gereksinimler
+## 🖥️ Desteklenen Sistemler
+
+- **Raspberry Pi** (3/4/5) - Raspberry Pi OS
+- **AlmaLinux** / RHEL / CentOS Stream 9
+
+---
+
+## 🚀 Hızlı Kurulum
+
+### Raspberry Pi
+```bash
+curl -sSL https://raw.githubusercontent.com/rootcastleco/raspberry-server/main/install.sh | bash
+```
+
+### AlmaLinux / RHEL 9
+```bash
+curl -sSL https://raw.githubusercontent.com/rootcastleco/raspberry-server/main/install-almalinux.sh | sudo bash
+```
+
+---
+
+## 🛠️ Gereksinimler (Raspberry Pi)
 
 - Raspberry Pi 3/4/5 (önerilen: Pi 4 2GB+)
 - Raspberry Pi OS (64-bit önerilir)
