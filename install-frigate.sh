@@ -224,3 +224,4 @@ echo "Yararlı komutlar:"
 echo "  - Frigate logları: docker logs -f frigate"
 echo "  - go2rtc logları: journalctl -u go2rtc -f"
 echo ""
+# Updated Sun Feb  1 23:36:43 +03 2026
